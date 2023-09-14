@@ -7,11 +7,8 @@ public class Account {
     private String passWord;
     private String email;
     private String phone;
-    private int status ;
+    private Status status ;
 
-    public int getStatus() {
-        return status;
-    }
 
     @Override
     public String toString() {
@@ -25,8 +22,12 @@ public class Account {
                 '}';
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Status getStatus() {
+        return status;
     }
 
     public String getAccountId() {
@@ -80,7 +81,7 @@ public class Account {
     public Account() {
     }
 
-    public Account(String accountId, String fullName, String passWord, String email, String phone, int status) {
+    public Account(String accountId, String fullName, String passWord, String email, String phone, Status status) {
         this.accountId = accountId;
         this.fullName = fullName;
         this.passWord = passWord;

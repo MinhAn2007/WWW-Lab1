@@ -5,7 +5,7 @@ public class Role {
     private String roleName;
     private String description;
 
-    private int status;
+    private Status status;
 
     public Role() {
     }
@@ -34,11 +34,11 @@ public class Role {
         this.description = description;
     }
 
-    public int getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -52,7 +52,7 @@ public class Role {
                 '}';
     }
 
-    public Role(String roleId, String roleName, String description, int status) {
+    public Role(String roleId, String roleName, String description, Status status) {
         this.roleId = roleId;
         this.roleName = roleName;
         this.description = description;
