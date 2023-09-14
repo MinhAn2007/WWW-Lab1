@@ -1,7 +1,13 @@
 package vn.edu.fit.iuh.lab1.controllers;
 import java.io.*;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import org.mariadb.jdbc.Connection;
+import vn.edu.fit.iuh.lab1.repositories.AccountRepository;
 //
 //import jakarta.servlet.annotation.WebServlet;
 //
@@ -12,21 +18,16 @@ import jakarta.servlet.annotation.*;
 
 @WebServlet(name = "CotrollerServlet", value = "/servlet")
 public class CotrollerServlet extends HttpServlet {
-    private String message;
 
-    public void init() {
-        message = "Hello World!";
-    }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html");
-
-        // Hello
-        PrintWriter out = response.getWriter();
-        out.println("<html><body>");
-        out.println("<h1>" + message + "</h1>");
-        out.println("</body></html>");
-    }
-
-    public void destroy() {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        AccountRepository acc = new AccountRepository();
+        try {
+            acc.getAll();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }}
