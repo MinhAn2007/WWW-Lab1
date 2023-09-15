@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.SQLOutput;
 import java.util.List;
 
+import vn.edu.fit.iuh.lab1.models.Role;
 import vn.edu.fit.iuh.lab1.models.Status;
 
 import jakarta.servlet.ServletException;
@@ -14,6 +15,7 @@ import jakarta.servlet.annotation.*;
 import org.mariadb.jdbc.Connection;
 import vn.edu.fit.iuh.lab1.models.Account;
 import vn.edu.fit.iuh.lab1.repositories.AccountRepository;
+import vn.edu.fit.iuh.lab1.repositories.RoleRepository;
 //
 //import jakarta.servlet.annotation.WebServlet;
 //
@@ -29,17 +31,18 @@ public class CotrollerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
 
-        AccountRepository acc = new AccountRepository();
+        //AccountRepository acc = new AccountRepository();
+        RoleRepository roleRepository = new RoleRepository();
         if (action.equals("displayList")) {
             try {
-                List<Account> accounts = acc.getAll();
+                List<Role> roles = roleRepository.getAll();
 
                 // Tạo một chuỗi HTML để hiển thị danh sách tài khoản
                 StringBuilder htmlBuilder = new StringBuilder();
                 htmlBuilder.append("<html><body><h1>Danh sách tài khoản:</h1>");
 
-                for (Account account : accounts) {
-                    htmlBuilder.append("<p>").append(account.getFullName()).append("</p>");
+                for (Role role : roles) {
+                    htmlBuilder.append("<p>").append(role.getRoleName()).append("</p>");
                 }
 
                 htmlBuilder.append("</body></html>");
@@ -55,14 +58,19 @@ public class CotrollerServlet extends HttpServlet {
             }
         }
         if (action.equals("add")) {
-            String accountId = request.getParameter("account_id");
-            String fullName = request.getParameter("full_name");
-            String password = request.getParameter("password");
-            String email = request.getParameter("email");
-            String phone = request.getParameter("phone");
+//            String accountId = request.getParameter("account_id");
+//            String fullName = request.getParameter("full_name");
+//            String password = request.getParameter("password");
+//            String email = request.getParameter("email");
+//            String phone = request.getParameter("phone");
+//            String selectedStatus = request.getParameter("status");
+//            Status status;
+
+            String roleId = request.getParameter("role_id");
+            String roleName = request.getParameter("role_name");
+            String description = request.getParameter("description");
             String selectedStatus = request.getParameter("status");
             Status status;
-
 // Map the String value to the enum
             switch (selectedStatus) {
                 case "ACTIVE":
@@ -81,7 +89,7 @@ public class CotrollerServlet extends HttpServlet {
             }
             boolean add = false;
             try {
-                add = acc.create(new Account(accountId, fullName, password, email, phone, status));
+                add = roleRepository.create(new Role(roleId, roleName, description, status));
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             } catch (ClassNotFoundException e) {
@@ -89,7 +97,7 @@ public class CotrollerServlet extends HttpServlet {
             }
             if (add) {
                 StringBuilder htmlBuilder = new StringBuilder();
-                htmlBuilder.append("<p>").append(accountId + fullName + password + email + phone + status + selectedStatus).append("</p>");
+                htmlBuilder.append("<p>").append(roleId + roleName + description + status + selectedStatus).append("</p>");
                 PrintWriter out = response.getWriter();
                 out.println(htmlBuilder.toString());
             } else {
@@ -104,11 +112,11 @@ public class CotrollerServlet extends HttpServlet {
         }
         if (action.equals("delete")) {
 
-            String accountId = request.getParameter("account_id3");
+            String accountId = request.getParameter("role_id1");
 
             boolean delete;
             try {
-                delete = acc.delete(accountId);
+                delete = roleRepository.delete(accountId);
             } catch (SQLException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -128,15 +136,19 @@ public class CotrollerServlet extends HttpServlet {
             }
 
         }
-        if(action.equals("update")){
-            String accountId2 = request.getParameter("account_id");
-            String fullName2 = request.getParameter("full_name");
-            String password2 = request.getParameter("password");
-            String email2 = request.getParameter("email");
-            String phone2 = request.getParameter("phone");
-            String selectedStatus2 = request.getParameter("status");
+        if (action.equals("update")) {
+//            String accountId2 = request.getParameter("account_id");
+//            String fullName2 = request.getParameter("full_name");
+//            String password2 = request.getParameter("password");
+//            String email2 = request.getParameter("email");
+//            String phone2 = request.getParameter("phone");
+//            String selectedStatus2 = request.getParameter("status");
+//            Status status2;
+            String roleId2 = request.getParameter("role_id2");
+            String roleName2 = request.getParameter("role_name2");
+            String description2 = request.getParameter("description2");
+            String selectedStatus2 = request.getParameter("status2");
             Status status2;
-
 // Map the String value to the enum
             switch (selectedStatus2) {
                 case "ACTIVE":
@@ -155,7 +167,7 @@ public class CotrollerServlet extends HttpServlet {
             }
             boolean update = false;
             try {
-                update = acc.update(new Account(accountId2, fullName2, password2, email2, phone2, status2));
+                update = roleRepository.update(new Role(roleId2, roleName2, description2, status2));
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             } catch (ClassNotFoundException e) {
@@ -163,7 +175,7 @@ public class CotrollerServlet extends HttpServlet {
             }
             if (update) {
                 StringBuilder htmlBuilder = new StringBuilder();
-                htmlBuilder.append("<p>Đã update").append(accountId2 + fullName2 + password2 + email2 + phone2  + selectedStatus2).append("</p>");
+                htmlBuilder.append("<p>Đã update").append(roleId2 + roleName2 + description2+ selectedStatus2).append("</p>");
                 PrintWriter out = response.getWriter();
                 out.println(htmlBuilder.toString());
             } else {
@@ -177,5 +189,5 @@ public class CotrollerServlet extends HttpServlet {
             }
         }
     }
-    }
+}
 
