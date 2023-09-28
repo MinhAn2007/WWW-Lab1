@@ -1,21 +1,38 @@
 package vn.edu.fit.iuh.lab1.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
+import java.util.List;
+
+@Entity
 public class Role {
-    private String roleId;
+    @Id
+    private String role_id;
     private String roleName;
     private String description;
+    private int status;
+    @OneToMany(mappedBy = "role")
+    private List<GrantAccess> listGrant;
 
-    private Status status;
+    public Role(String role_id, String roleName, String description, int status, List<GrantAccess> listGrant) {
+        this.role_id = role_id;
+        this.roleName = roleName;
+        this.description = description;
+        this.status = status;
+        this.listGrant = listGrant;
+    }
 
     public Role() {
     }
 
-    public String getRoleId() {
-        return roleId;
+    public String getRole_id() {
+        return role_id;
     }
 
-    public void setRoleId(String roleId) {
-        this.roleId = roleId;
+    public void setRole_id(String role_id) {
+        this.role_id = role_id;
     }
 
     public String getRoleName() {
@@ -34,28 +51,30 @@ public class Role {
         this.description = description;
     }
 
-    public Status getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(int status) {
         this.status = status;
+    }
+
+    public List<GrantAccess> getListGrant() {
+        return listGrant;
+    }
+
+    public void setListGrant(List<GrantAccess> listGrant) {
+        this.listGrant = listGrant;
     }
 
     @Override
     public String toString() {
-        return "Logs{" +
-                "roleId='" + roleId + '\'' +
+        return "Role{" +
+                "role_id='" + role_id + '\'' +
                 ", roleName='" + roleName + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
+                ", listGrant=" + listGrant +
                 '}';
-    }
-
-    public Role(String roleId, String roleName, String description, Status status) {
-        this.roleId = roleId;
-        this.roleName = roleName;
-        this.description = description;
-        this.status = status;
     }
 }

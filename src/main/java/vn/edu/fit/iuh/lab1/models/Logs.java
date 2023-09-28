@@ -1,27 +1,31 @@
 package vn.edu.fit.iuh.lab1.models;
 
-import java.math.BigInteger;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
 
+
+import java.util.Date;
+import java.util.List;
+@Entity
 public class Logs {
-
-    private long id ;
-    private Account account;
-    private LocalDateTime loginTime;
-    private LocalDateTime logoutTime;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    private String account_id;
+    private Date loginTime;
+    private Date logoutTime;
     private String note;
+    public Logs() {
+    }
 
-    public Logs(long id, Account account, LocalDateTime loginTime, LocalDateTime logoutTime, String note) {
+    public Logs(long id, String account_id, Date loginTime, Date logoutTime, String note) {
         this.id = id;
-        this.account = account;
+        this.account_id = account_id;
         this.loginTime = loginTime;
         this.logoutTime = logoutTime;
         this.note = note;
     }
 
-    public Logs() {
-    }
+
 
     public long getId() {
         return id;
@@ -31,27 +35,27 @@ public class Logs {
         this.id = id;
     }
 
-    public Account getAccount() {
-        return account;
+    public String getAccount_id() {
+        return account_id;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setAccount_id(String account_id) {
+        this.account_id = account_id;
     }
 
-    public LocalDateTime getLoginTime() {
+    public Date getLoginTime() {
         return loginTime;
     }
 
-    public void setLoginTime(LocalDateTime loginTime) {
+    public void setLoginTime(Date loginTime) {
         this.loginTime = loginTime;
     }
 
-    public LocalDateTime getLogoutTime() {
+    public Date getLogoutTime() {
         return logoutTime;
     }
 
-    public void setLogoutTime(LocalDateTime logoutTime) {
+    public void setLogoutTime(Date logoutTime) {
         this.logoutTime = logoutTime;
     }
 
@@ -61,16 +65,5 @@ public class Logs {
 
     public void setNote(String note) {
         this.note = note;
-    }
-
-    @Override
-    public String toString() {
-        return "Logs{" +
-                "id=" + id +
-                ", account=" + account +
-                ", loginTime=" + loginTime +
-                ", logoutTime=" + logoutTime +
-                ", note='" + note + '\'' +
-                '}';
     }
 }

@@ -1,6 +1,11 @@
 package vn.edu.fit.iuh.lab1.repositories;
 
 
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Persistence;
+import jakarta.persistence.TypedQuery;
 import vn.edu.fit.iuh.lab1.models.Account;
 import vn.edu.fit.iuh.lab1.models.Status;
 import vn.edu.fit.iuh.lab1.repositories.ConnectDB;
@@ -11,105 +16,47 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class AccountRepository {
-    String querry = "delete * from mydb.account where  account_id like ? ";
+    private EntityManager entityManager;
+    private EntityTransaction entityTransaction;
 
-//    public Account getById(String id) throws SQLException, ClassNotFoundException {
-//        Account account = new Account();
-//        Connection con;
-//        con = ConnectDB.getInstance().getConnection();
-//        String querry = "Select * from Account where  account_id like '?'";
-//        PreparedStatement statement = null;
-//        statement = con.prepareStatement(querry);
-//        statement.setString(1,id);
-//        ResultSet rs = statement.executeQuery();
-//        statement.executeQuery();
-//        while (rs.next()) {
-//            Status status = Status.fromStatus(rs.getInt("status"));
-//            account = new Account(rs.getString("account_id"), rs.getString("full_name"), rs.getString("password"), rs.getString("email"), rs.getString("phone"), status);
-//            return account;
-//            }
-//        return null;
-//    }
-    public List<Account> getAll() throws SQLException, ClassNotFoundException {
-        ArrayList<Account> listAccount = new ArrayList<>();
-        Connection con;
-        con = ConnectDB.getInstance().getConnection();
-        String querry = "Select * from Account";
-        PreparedStatement statement = null;
-        statement = con.prepareStatement(querry);
-        ResultSet rs = statement.executeQuery();
-        while (rs.next()) {
-            Status status = Status.fromStatus(rs.getInt("status"));
-            Account account = new Account(rs.getString("account_id"), rs.getString("full_name"), rs.getString("password"), rs.getString("email"), rs.getString("phone"), status);
-            listAccount.add(account);
-        }
-        return listAccount;
+    @Inject
+    private AccountRepository accountRepository;
+    @Inject
+    private RoleRepository roleRepository;
+
+    public AccountRepository() {
+        entityManager = Persistence.createEntityManagerFactory("lab1").createEntityManager();
+        entityTransaction = entityManager.getTransaction();
     }
 
-    public boolean create(Account account) throws SQLException, ClassNotFoundException {
-        Connection con;
-        con = ConnectDB.getInstance().getConnection();
-        PreparedStatement statement = null;
-        try{
-        String querry = "INSERT INTO mydb.account values  (?, ?, ?, ?, ?, ?)\n" +
-                "\n";
-        statement = con.prepareStatement(querry);
-        statement.setString(1,account.getAccountId());
-        statement.setString(2,account.getFullName());
-        statement.setString(3,account.getPassWord());
-        statement.setString(4,account.getEmail());
-        statement.setString(5,account.getPhone());
-        statement.setInt(6,account.getStatus().getStage());
-        statement.executeQuery();
-        return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+    public void insert(Account acc) {
+        try {
+            entityTransaction.begin();
+            entityManager.persist(acc);
+            entityTransaction.commit();
+        } catch (Exception ex) {
+            entityTransaction.rollback();
         }
-
     }
 
-    public boolean delete(String id) throws SQLException, ClassNotFoundException {
-        Connection con;
-        con = ConnectDB.getInstance().getConnection();
-        PreparedStatement statement = null;
-        try{
-            String querry = "delete from mydb.account where  account_id = ? ";
-            statement = con.prepareStatement(querry);
-            statement.setString(1,id);
-            statement.executeQuery();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+    public Optional<Account> login (String id,String pw){
+        Account account = entityManager.find(Account.class,id);
+        if (account != null){
+            if (account.getPassword().equals(pw))
+                return Optional.of(account);
         }
-
+        return Optional.empty();
     }
-
-    public boolean update(Account account) throws SQLException, ClassNotFoundException {
-        Connection con;
-        con = ConnectDB.getInstance().getConnection();
-        PreparedStatement statement = null;
-        try{
-            //update
-            String query = "UPDATE mydb.account SET full_name = ?, password = ?, email = ?, phone = ?, status = ? WHERE account_id = ?";
-            statement = con.prepareStatement(query);
-            statement.setString(1,account.getFullName());
-            statement.setString(2,account.getPassWord());
-            statement.setString(3,account.getEmail());
-            statement.setString(4,account.getPhone());
-            statement.setInt(5,account.getStatus().getStage());
-            statement.setString(6,account.getAccountId());
-            statement.executeQuery();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-
+    public List<Account> getAllAcc() {
+        return entityManager.createNamedQuery("Account.findAll", Account.class).getResultList();
     }
-
-
+    public Optional<Account> findbyId(String id) {
+        TypedQuery<Account> query = entityManager.createQuery("select a from Account a where a.account_id=:id", Account.class);
+        query.setParameter("id", id);
+        Account account = query.getSingleResult();
+        return account == null ? Optional.empty() : Optional.of(account);
+    }
 }

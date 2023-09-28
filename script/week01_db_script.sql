@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `account` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- Dumping data for table mydb.account: ~2 rows (approximately)
-INSERT INTO `account` (`account_id`, `full_name`, `password`, `email`, `phone`, `status`) VALUES
+INSERT INTO `account` (`ACCOUNT_ID`,`FULLNAME`, `PASSWORD`, `EMAIL`,'PHONE',`STATUS`) VALUES
     ('met', 'Tran Thi Met', '123', 'met@gmail.com', '0904567890', 1),
     ('teo', 'NGuyen Van Teo', '123', 'teo@gmail.com', '0903123456', 1);
 
