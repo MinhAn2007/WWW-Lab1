@@ -1,41 +1,37 @@
 package vn.edu.fit.iuh.lab1.models;
 
+import jakarta.persistence.*;
+
+import java.util.List;
+
+@Entity
+@NamedQueries(
+        value = @NamedQuery(name = "Account.findAll", query = "select a from Account a where a.status=1")
+)
 public class Account {
 
-    private String accountId;
+
+    @Id
+    private String account_id;
     private String fullName;
-    private String passWord;
+    private String password;
     private String email;
     private String phone;
-    private Status status ;
+    private int status;
 
+    @OneToMany(mappedBy = "account")
+    private List<GrantAccess> listGrant;
 
-    @Override
-    public String toString() {
-        return "Account{" +
-                "accountId='" + accountId + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", passWord='" + passWord + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", status=" + status +
-                '}';
+    public Account() {
+
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public String getAccount_id() {
+        return account_id;
     }
 
-    public Status getStatus() {
-        return status;
-    }
-
-    public String getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
+    public void setAccount_id(String account_id) {
+        this.account_id = account_id;
     }
 
     public String getFullName() {
@@ -46,12 +42,12 @@ public class Account {
         this.fullName = fullName;
     }
 
-    public String getPassWord() {
-        return passWord;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {
@@ -70,23 +66,34 @@ public class Account {
         this.phone = phone;
     }
 
-    public Account(String accountId, String fullName, String passWord, String email, String phone) {
-        this.accountId = accountId;
-        this.fullName = fullName;
-        this.passWord = passWord;
-        this.email = email;
-        this.phone = phone;
+    public int getStatus() {
+        return status;
     }
 
-    public Account() {
+    public void setStatus(int status) {
+        this.status = status;
     }
 
-    public Account(String accountId, String fullName, String passWord, String email, String phone, Status status) {
-        this.accountId = accountId;
+    public Account(String account_id, String fullName, String password, String email, String phone, int status) {
+        this.account_id = account_id;
         this.fullName = fullName;
-        this.passWord = passWord;
+        this.password = password;
         this.email = email;
         this.phone = phone;
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "account_id='" + account_id + '\'' +
+                ", full_name='" + fullName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", status=" + status +
+                '}';
+    }
 }
+
+
