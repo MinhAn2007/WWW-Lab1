@@ -7,14 +7,7 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.TypedQuery;
 import vn.edu.fit.iuh.lab1.models.Account;
-import vn.edu.fit.iuh.lab1.models.Status;
-import vn.edu.fit.iuh.lab1.repositories.ConnectDB;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,5 +51,21 @@ public class AccountRepository {
         query.setParameter("id", id);
         Account account = query.getSingleResult();
         return account == null ? Optional.empty() : Optional.of(account);
+    }
+    public List<Account> getAccByRole(String nameRole) {
+        //select * from mydb.account a join mydb.grantaccess g on a.ACCOUNT_ID = g.ACCOUNT_ID join  mydb.`role` r on r.ROLE_ID = g.ROLE_ID where r.ROLENAME = 'user'
+        TypedQuery<Account> query = entityManager.createQuery("select a from Account a join GrantAccess g on a.account_id = g.account_id join Role r on r.role_id = g.role_id where r.roleName =:nameRole", Account.class);
+        query.setParameter("nameRole", nameRole);
+        return query.getResultList();
+    }
+
+    public boolean checkRole(String id){
+        //select r.ROLENAME  from mydb.`role`r join mydb.grantaccess g on r.ROLE_ID = g.ROLE_ID join mydb.account a on g.ACCOUNT_ID =a.ACCOUNT_ID where  a.ACCOUNT_ID = 'teo'
+        TypedQuery<String> query = entityManager.createQuery("select r.role_id  from Role r join GrantAccess g on r.role_id = g.role_id join Account  a on g.account_id =a.account_id where  a.account_id =:id",String.class);
+        query.setParameter("id", id);
+        String string = query.getResultList().toString();
+        if (string.equalsIgnoreCase("[admin]"))
+            return true;
+        return false;
     }
 }

@@ -100,13 +100,10 @@
 
 <div class="container">
     <h2>Welcome to Admin Dashboard</h2>
-
     <!-- Nút thêm tài khoản -->
-    <button type="button" onclick="addAccount()">Add Account</button>
-
+    <button type="button" onclick="location.href='ControlServlet?action=listRole'">Role</button>
     <!-- Nút sửa tài khoản -->
     <button type="button" onclick="editAccount()">Edit Account</button>
-
     <!-- Nút xóa tài khoản -->
     <button type="button" onclick="deleteAccount()">Delete Account</button>
 
@@ -138,10 +135,7 @@
 </div>
 
 <script>
-    function addAccount() {
-        // Redirect or show a modal for adding an account
-        // Example: window.location.href = 'add_account.jsp';
-    }
+
 
     function editAccount() {
         // Redirect or show a modal for editing an account

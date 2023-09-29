@@ -1,12 +1,13 @@
 package vn.edu.fit.iuh.lab1.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
+@NamedQueries(
+        value = @NamedQuery(name = "Role.findAll", query = "select r from Role r where r.status=1")
+)
 public class Role {
     @Id
     private String role_id;

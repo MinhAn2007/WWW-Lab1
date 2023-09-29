@@ -25,49 +25,70 @@ import vn.edu.fit.iuh.lab1.repositories.RoleRepository;
 public class CotrollerServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
+        RoleRepository roleRepository = new RoleRepository();
+        AccountRepository accountRepository = new AccountRepository();
+
+        if (action.equalsIgnoreCase("listRole")) {
+            List<String> listRole = roleRepository.getName();
+            request.setAttribute("listRole", listRole);
+            String destination = "role.jsp";
+            RequestDispatcher requestDis = request.getRequestDispatcher(destination);
+            requestDis.forward(request, response);
+        }
+        else if(action.equalsIgnoreCase("listAccByRole")){
+            String role_id = request.getParameter("role_id");
+            List<Account> listAcc = accountRepository.getAccByRole(role_id);
+            request.setAttribute("listAccByRole",listAcc);
+            String destination = "account_role.jsp";
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
+            requestDispatcher.forward(request, response);
+        }
+    }
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String action = request.getParameter("action");
         PrintWriter out = response.getWriter();
         AccountRepository accountRepository = new AccountRepository();
+        RoleRepository roleRepository = new RoleRepository();
         if (action.equalsIgnoreCase("login")) {
 
             String id = request.getParameter("username");
             String pw = request.getParameter("password");
             if (accountRepository.login(id, pw).isPresent()) {
-                if (true) {
+                Optional<Account> optionalAccount = accountRepository.findbyId(id);
+                Account acc = optionalAccount.orElseThrow(() -> new IllegalStateException("Account not found"));
+
+                if (accountRepository.checkRole(id)) {
                     List<Account> listAcc = accountRepository.getAllAcc();
                     request.setAttribute("listAcc",listAcc);
                     String destination = "dashboard.jsp";
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
                     requestDispatcher.forward(request, response);
                 }
-             else {
-                Optional<Account> optionalAccount = accountRepository.findbyId(id);
-                Account acc = optionalAccount.orElseThrow(() -> new IllegalStateException("Account not found"));
-                request.setAttribute("acc", acc);
-                String destination = "account.jsp";
-                RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
-                requestDispatcher.forward(request, response);
+                else {
+                    request.setAttribute("acc", acc);
+                    String destination = "account.jsp";
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
+                    try {
+                        requestDispatcher.forward(request, response);
+                    } catch (ServletException e) {
+                        throw new RuntimeException(e);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
-        } else {
-            out = response.getWriter();
-            out.println("<script type=\"text/javascript\">");
-            out.println("alert('Account is not exist');");
-            out.println("location='index.jsp';");
-            out.println("</script>");
-        }
+            else {
+                out = response.getWriter();
+                out.println("<script type=\"text/javascript\">");
+                out.println("alert('Account is not exist');");
+                out.println("location='index.jsp';");
+                out.println("</script>");
+
+            }
+
     }
-}
-
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
-        PrintWriter out = response.getWriter();
-        AccountRepository accountRepository = new AccountRepository();
-        if(action.equalsIgnoreCase("login")) {
-        }
-    }
-
-}
+}}
 

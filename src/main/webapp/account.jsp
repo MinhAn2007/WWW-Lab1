@@ -33,7 +33,7 @@
 </head>
 <body>
 <div class="container">
-    <h2>Insert Account</h2>
+    <h2>InFor Account</h2>
     <form action="ControlServlet" method="POST">
         <p>Name: <%= ((Account) request.getAttribute("acc")).getFullName()%></p>
         <p>Id: <%= ((Account) request.getAttribute("acc")).getAccount_id()%></p>
