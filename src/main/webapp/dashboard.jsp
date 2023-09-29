@@ -119,16 +119,18 @@
             <th>Email</th>
             <th>Phone</th>
             <th>Status</th>
+            <th>Role</th>
+
         </tr>
         <% List<Account> listAcc = (List) request.getAttribute("listAcc"); %>
         <% for(int i=0;i<listAcc.size();i++){%>
         <tr>
-            <td><%= listAcc.get(i).getAccount_id()%></td>
+            <td> <%= listAcc.get(i).getAccount_id()%></td>
             <td><%= listAcc.get(i).getFullName()%></td>
             <td><%= listAcc.get(i).getEmail()%></td>
             <td><%= listAcc.get(i).getEmail()%></td>
             <td><%= listAcc.get(i).getStatus()%></td>
-
+            <td><a href="ControlServlet?action=listRoleOfAcc&account_id=<%= listAcc.get(i).getAccount_id()%>">Show Roles</a></td>
             </tr>
         <%}%>
     </table>
@@ -151,6 +153,7 @@
         // Redirect or show a modal for granting permission to an account
         // Example: window.location.href = 'grant_permission.jsp';
     }
+
 </script>
 </body>
 </html>

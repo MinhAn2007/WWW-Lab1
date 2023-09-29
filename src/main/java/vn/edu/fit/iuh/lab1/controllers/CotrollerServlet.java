@@ -45,6 +45,14 @@ public class CotrollerServlet extends HttpServlet {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
             requestDispatcher.forward(request, response);
         }
+        else if(action.equalsIgnoreCase("listRoleOfAcc")){
+            String account_id = request.getParameter("account_id");
+            List<Role> roleList = roleRepository.getRoleOfAcc(account_id);
+            request.setAttribute("listRoleOfAcc",roleList);
+            String destination = "role_of_account.jsp";
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
+            requestDispatcher.forward(request, response);
+        }
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -60,7 +68,7 @@ public class CotrollerServlet extends HttpServlet {
                 Optional<Account> optionalAccount = accountRepository.findbyId(id);
                 Account acc = optionalAccount.orElseThrow(() -> new IllegalStateException("Account not found"));
 
-                if (accountRepository.checkRole(id)) {
+                if (roleRepository.checkRole(id)) {
                     List<Account> listAcc = accountRepository.getAllAcc();
                     request.setAttribute("listAcc",listAcc);
                     String destination = "dashboard.jsp";
@@ -73,9 +81,7 @@ public class CotrollerServlet extends HttpServlet {
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
                     try {
                         requestDispatcher.forward(request, response);
-                    } catch (ServletException e) {
-                        throw new RuntimeException(e);
-                    } catch (IOException e) {
+                    } catch (ServletException | IOException e) {
                         throw new RuntimeException(e);
                     }
                 }
