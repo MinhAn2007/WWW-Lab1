@@ -105,7 +105,7 @@
     <!-- Nút sửa tài khoản -->
     <button type="button" onclick="location.href='ControlServlet?action=getGrant'">Permission</button>
     <!-- Nút xóa tài khoản -->
-    <button type="button" onclick="deleteAccount()">Delete Account</button>
+    <button type="button" onclick="location.href='ControlServlet?action=getLogs'">Logs</button>
 
     <!-- Nút cấp quyền -->
     <button type="button" onclick="grantPermission()">Grant Permission</button>
@@ -134,6 +134,9 @@
             </tr>
         <%}%>
     </table>
+    <br><br>
+    <button type="button" onclick="location.href='ControlServlet?action=logout'">Logout</button>
+
 </div>
 
 <script>

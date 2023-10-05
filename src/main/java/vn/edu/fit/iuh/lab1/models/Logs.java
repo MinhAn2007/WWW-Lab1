@@ -6,6 +6,9 @@ import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
 @Entity
+@NamedQueries(
+        value = @NamedQuery(name = "Logs.findAll", query = "select l from Logs l")
+)
 public class Logs {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

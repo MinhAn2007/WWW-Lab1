@@ -29,6 +29,19 @@
         p {
             margin: 5px 0;
         }
+        button {
+            background: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
     </style>
 </head>
 <body>
@@ -42,6 +55,7 @@
         <p>Status: <%= ((Account) request.getAttribute("acc")).getStatus()%></p>
 
     </form>
+    <button type="button" onclick="location.href='ControlServlet?action=logout'">Logout</button>
 
 </div>
 

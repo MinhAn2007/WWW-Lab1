@@ -52,10 +52,10 @@ public class AccountRepository {
         Account account = query.getSingleResult();
         return account == null ? Optional.empty() : Optional.of(account);
     }
-    public List<Account> getAccByRole(String nameRole) {
+    public List<Account> getAccByRole(String roleId) {
         //select * from mydb.account a join mydb.grantaccess g on a.ACCOUNT_ID = g.ACCOUNT_ID join  mydb.`role` r on r.ROLE_ID = g.ROLE_ID where r.ROLENAME = 'user'
-        TypedQuery<Account> query = entityManager.createQuery("select a from Account a join GrantAccess g on a.account_id = g.account_id join Role r on r.role_id = g.role_id where r.roleName =:nameRole", Account.class);
-        query.setParameter("nameRole", nameRole);
+        TypedQuery<Account> query = entityManager.createQuery("select a from Account a join GrantAccess g on a.account_id = g.account_id join Role r on r.role_id = g.role_id where r.role_id =:roleId", Account.class);
+        query.setParameter("roleId", roleId);
         return query.getResultList();
     }
     public List<String> getName() {

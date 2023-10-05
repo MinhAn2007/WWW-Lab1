@@ -4,6 +4,7 @@ import java.io.*;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.SQLOutput;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ import jakarta.servlet.annotation.*;
 import org.mariadb.jdbc.Connection;
 import vn.edu.fit.iuh.lab1.repositories.AccountRepository;
 import vn.edu.fit.iuh.lab1.repositories.GrantAccessRepository;
+import vn.edu.fit.iuh.lab1.repositories.LogRepository;
 import vn.edu.fit.iuh.lab1.repositories.RoleRepository;
 
 @WebServlet(name = "CotrollerServlet", value = "/ControlServlet")
@@ -27,6 +29,7 @@ public class CotrollerServlet extends HttpServlet {
         String action = request.getParameter("action");
         RoleRepository roleRepository = new RoleRepository();
         AccountRepository accountRepository = new AccountRepository();
+        LogRepository logRepository = new LogRepository();
         PrintWriter out = response.getWriter();
         List<String> listRoleForGrant = roleRepository.getName();
         List<String> listAccForGrant = accountRepository.getName();
@@ -38,32 +41,50 @@ public class CotrollerServlet extends HttpServlet {
             String destination = "role.jsp";
             RequestDispatcher requestDis = request.getRequestDispatcher(destination);
             requestDis.forward(request, response);
-        }
-        else if(action.equalsIgnoreCase("listAccByRole")){
+        } else if (action.equalsIgnoreCase("listAccByRole")) {
             String role_id = request.getParameter("role_id");
             List<Account> listAcc = accountRepository.getAccByRole(role_id);
-            request.setAttribute("listAccByRole",listAcc);
+            request.setAttribute("listAccByRole", listAcc);
             String destination = "account_role.jsp";
             RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
             requestDispatcher.forward(request, response);
-        }
-        else if(action.equalsIgnoreCase("listRoleOfAcc")){
+        } else if (action.equalsIgnoreCase("listRoleOfAcc")) {
             String account_id = request.getParameter("account_id");
             List<Role> roleList = roleRepository.getRoleOfAcc(account_id);
-            request.setAttribute("listRoleOfAcc",roleList);
+            request.setAttribute("listRoleOfAcc", roleList);
             String destination = "role_of_account.jsp";
             RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
             requestDispatcher.forward(request, response);
-        }
-        else if(action.equalsIgnoreCase("getGrant")){
-
+        } else if (action.equalsIgnoreCase("getGrant")) {
             String destination = "add_role_for_acc.jsp";
             RequestDispatcher requestDis = request.getRequestDispatcher(destination);
             requestDis.forward(request, response);
+        } else if (action.equalsIgnoreCase("getLogs")) {
+            List<Logs> Listlogs = logRepository.getAllLogs();
+            request.setAttribute("Listlogs", Listlogs);
+            String destination = "log.jsp";
+            RequestDispatcher requestDis = request.getRequestDispatcher(destination);
+            requestDis.forward(request, response);
+        } else if (action.equalsIgnoreCase("logout")) {
+            Logs logs = new Logs();
+            Date loginTime = (Date) request.getSession().getAttribute("loginTime");
+            String id = request.getSession().getAttribute("id").toString();
+            request.getSession().invalidate();
+            logs.setAccount_id(id);
+            logs.setLoginTime(loginTime);
+            Date logout = new Date();
+            logs.setLogoutTime(logout);
+            logs.setNote("Account : " + id + "\r" +
+                        "Time login : " + loginTime + "\r" +
+                        "Time logout : " + logout + "\r"
+            );
+            logRepository.logLogout(logs);
+            response.sendRedirect("index.jsp");
         }
 
 
     }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String action = request.getParameter("action");
@@ -71,22 +92,26 @@ public class CotrollerServlet extends HttpServlet {
         AccountRepository accountRepository = new AccountRepository();
         RoleRepository roleRepository = new RoleRepository();
         GrantAccessRepository grantAccessRepository = new GrantAccessRepository();
+        LogRepository logRepository = new LogRepository();
         if (action.equalsIgnoreCase("login")) {
-
             String id = request.getParameter("username");
+            request.getSession().setAttribute("id", id);
             String pw = request.getParameter("password");
+            Date loginTime = new Date();
+            request.getSession().setAttribute("loginTime", loginTime);
+
+            // Lưu log vào cơ sở dữ liệu hoặc tệp log
             if (accountRepository.login(id, pw).isPresent()) {
                 Optional<Account> optionalAccount = accountRepository.findbyId(id);
                 Account acc = optionalAccount.orElseThrow(() -> new IllegalStateException("Account not found"));
 
                 if (roleRepository.checkRole(id)) {
                     List<Account> listAcc = accountRepository.getAllAcc();
-                    request.setAttribute("listAcc",listAcc);
+                    request.setAttribute("listAcc", listAcc);
                     String destination = "dashboard.jsp";
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
                     requestDispatcher.forward(request, response);
-                }
-                else {
+                } else {
                     request.setAttribute("acc", acc);
                     String destination = "account.jsp";
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
@@ -97,9 +122,7 @@ public class CotrollerServlet extends HttpServlet {
                     }
                 }
 
-            }
-
-            else {
+            } else {
                 out = response.getWriter();
                 out.println("<script type=\"text/javascript\">");
                 out.println("alert('Account is not exist');");
@@ -109,8 +132,7 @@ public class CotrollerServlet extends HttpServlet {
             }
 
 
-    }
-        else if (action.equalsIgnoreCase("addGrant")) {
+        } else if (action.equalsIgnoreCase("addGrant")) {
 //            INSERT INTO mydb.grantaccess
 //                    (ACCOUNT_ID, ROLE_ID, is_grant, NOTE, ACCOUNT_ACCOUNT_ID, ROLE_ROLE_ID)
 //            VALUES('', '', 0, NULL, NULL, NULL);
@@ -118,17 +140,16 @@ public class CotrollerServlet extends HttpServlet {
             String role = request.getParameter("selectedRole");
             String acc = request.getParameter("selectedAcc");
             String description = request.getParameter("description");
-            boolean add = grantAccessRepository.insert(new GrantAccess(role,acc,Grant.ENABLED,description));
-            if(add){
+            boolean add = grantAccessRepository.insert(new GrantAccess(role, acc, Grant.ENABLED, description));
+            if (add) {
                 out.println("<script type=\"text/javascript\">");
-                out.println("alert('Add Grant success for " + acc+ " role " + role+" ');");
+                out.println("alert('Add Grant success for " + acc + " role " + role + " ');");
                 out.println("window.history.back()");
                 out.println("window.location.reload()");
                 out.println("</script>");
-            }
-        else {
+            } else {
                 out.println("<script type=\"text/javascript\">");
-                out.println("alert('Add Grant UnSuccess for " + acc+ " role " + role+" ');");
+                out.println("alert('Add Grant UnSuccess for " + acc + " role " + role + " ');");
                 out.println("window.history.back()");
                 out.println("window.location.reload()");
                 out.println("</script>");
@@ -136,5 +157,6 @@ public class CotrollerServlet extends HttpServlet {
         }
 
 
-    }}
+    }
+}
 
