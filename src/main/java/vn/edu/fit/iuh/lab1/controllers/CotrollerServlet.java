@@ -9,16 +9,14 @@ import java.util.Optional;
 
 import jakarta.inject.Inject;
 import jakarta.servlet.RequestDispatcher;
-import vn.edu.fit.iuh.lab1.models.GrantAccess;
-import vn.edu.fit.iuh.lab1.models.Role;
-import vn.edu.fit.iuh.lab1.models.Status;
+import vn.edu.fit.iuh.lab1.models.*;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import org.mariadb.jdbc.Connection;
-import vn.edu.fit.iuh.lab1.models.Account;
 import vn.edu.fit.iuh.lab1.repositories.AccountRepository;
+import vn.edu.fit.iuh.lab1.repositories.GrantAccessRepository;
 import vn.edu.fit.iuh.lab1.repositories.RoleRepository;
 
 @WebServlet(name = "CotrollerServlet", value = "/ControlServlet")
@@ -29,7 +27,11 @@ public class CotrollerServlet extends HttpServlet {
         String action = request.getParameter("action");
         RoleRepository roleRepository = new RoleRepository();
         AccountRepository accountRepository = new AccountRepository();
-
+        PrintWriter out = response.getWriter();
+        List<String> listRoleForGrant = roleRepository.getName();
+        List<String> listAccForGrant = accountRepository.getName();
+        request.setAttribute("listRoleForGrant", listRoleForGrant);
+        request.setAttribute("listAccForGrant", listAccForGrant);
         if (action.equalsIgnoreCase("listRole")) {
             List<String> listRole = roleRepository.getName();
             request.setAttribute("listRole", listRole);
@@ -53,6 +55,14 @@ public class CotrollerServlet extends HttpServlet {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
             requestDispatcher.forward(request, response);
         }
+        else if(action.equalsIgnoreCase("getGrant")){
+
+            String destination = "add_role_for_acc.jsp";
+            RequestDispatcher requestDis = request.getRequestDispatcher(destination);
+            requestDis.forward(request, response);
+        }
+
+
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -60,6 +70,7 @@ public class CotrollerServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         AccountRepository accountRepository = new AccountRepository();
         RoleRepository roleRepository = new RoleRepository();
+        GrantAccessRepository grantAccessRepository = new GrantAccessRepository();
         if (action.equalsIgnoreCase("login")) {
 
             String id = request.getParameter("username");
@@ -85,7 +96,9 @@ public class CotrollerServlet extends HttpServlet {
                         throw new RuntimeException(e);
                     }
                 }
+
             }
+
             else {
                 out = response.getWriter();
                 out.println("<script type=\"text/javascript\">");
@@ -95,6 +108,33 @@ public class CotrollerServlet extends HttpServlet {
 
             }
 
+
     }
-}}
+        else if (action.equalsIgnoreCase("addGrant")) {
+//            INSERT INTO mydb.grantaccess
+//                    (ACCOUNT_ID, ROLE_ID, is_grant, NOTE, ACCOUNT_ACCOUNT_ID, ROLE_ROLE_ID)
+//            VALUES('', '', 0, NULL, NULL, NULL);
+
+            String role = request.getParameter("selectedRole");
+            String acc = request.getParameter("selectedAcc");
+            String description = request.getParameter("description");
+            boolean add = grantAccessRepository.insert(new GrantAccess(role,acc,Grant.ENABLED,description));
+            if(add){
+                out.println("<script type=\"text/javascript\">");
+                out.println("alert('Add Grant success for " + acc+ " role " + role+" ');");
+                out.println("window.history.back()");
+                out.println("window.location.reload()");
+                out.println("</script>");
+            }
+        else {
+                out.println("<script type=\"text/javascript\">");
+                out.println("alert('Add Grant UnSuccess for " + acc+ " role " + role+" ');");
+                out.println("window.history.back()");
+                out.println("window.location.reload()");
+                out.println("</script>");
+            }
+        }
+
+
+    }}
 

@@ -58,6 +58,7 @@ public class AccountRepository {
         query.setParameter("nameRole", nameRole);
         return query.getResultList();
     }
-
-
+    public List<String> getName() {
+        return entityManager.createQuery("select DISTINCT a.account_id from Account a", String.class).getResultList();
+    }
 }

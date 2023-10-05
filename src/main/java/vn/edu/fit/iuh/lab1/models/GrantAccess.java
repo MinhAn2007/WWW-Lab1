@@ -1,26 +1,43 @@
 package vn.edu.fit.iuh.lab1.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
 
 @Entity
 public class GrantAccess {
     @Id
     private String role_id;
+
     @Id
-    private  String account_id;
+    private String account_id;
+
     @Column(name = "is_grant")
-    private boolean isGrant;
+    private Grant isGrant;
+
     private String note;
 
     @ManyToOne
+    @JoinColumn(name = "account_id", insertable = false, updatable = false)
     private Account account;
+
     @ManyToOne
+    @JoinColumn(name = "role_id", insertable = false, updatable = false)
     private Role role;
+
+    public GrantAccess(String role_id, String account_id, Grant isGrant, String note, Account account, Role role) {
+        this.role_id = role_id;
+        this.account_id = account_id;
+        this.isGrant = isGrant;
+        this.note = note;
+        this.account = account;
+        this.role = role;
+    }
+
+    public GrantAccess(String role_id, String account_id, Grant isGrant, String note) {
+        this.role_id = role_id;
+        this.account_id = account_id;
+        this.isGrant = isGrant;
+        this.note = note;
+    }
 
     public String getRole_id() {
         return role_id;
@@ -38,11 +55,11 @@ public class GrantAccess {
         this.account_id = account_id;
     }
 
-    public boolean isGrant() {
+    public Grant isGrant() {
         return isGrant;
     }
 
-    public void setGrant(boolean grant) {
+    public void setGrant(Grant grant) {
         isGrant = grant;
     }
 
@@ -70,27 +87,6 @@ public class GrantAccess {
         this.role = role;
     }
 
-    public GrantAccess(String role_id, String account_id, boolean isGrant, String note, Account account, Role role) {
-        this.role_id = role_id;
-        this.account_id = account_id;
-        this.isGrant = isGrant;
-        this.note = note;
-        this.account = account;
-        this.role = role;
-    }
-
     public GrantAccess() {
-    }
-
-    @Override
-    public String toString() {
-        return "GrantAccess{" +
-                "role_id='" + role_id + '\'' +
-                ", account_id='" + account_id + '\'' +
-                ", isGrant=" + isGrant +
-                ", note='" + note + '\'' +
-                ", account=" + account +
-                ", role=" + role +
-                '}';
     }
 }

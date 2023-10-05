@@ -103,7 +103,7 @@
     <!-- Nút thêm tài khoản -->
     <button type="button" onclick="location.href='ControlServlet?action=listRole'">Role</button>
     <!-- Nút sửa tài khoản -->
-    <button type="button" onclick="editAccount()">Edit Account</button>
+    <button type="button" onclick="location.href='ControlServlet?action=getGrant'">Permission</button>
     <!-- Nút xóa tài khoản -->
     <button type="button" onclick="deleteAccount()">Delete Account</button>
 

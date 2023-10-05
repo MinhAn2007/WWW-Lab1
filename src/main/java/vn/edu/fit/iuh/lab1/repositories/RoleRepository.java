@@ -27,7 +27,7 @@ public class RoleRepository {
 
 
     public List<String> getName() {
-        return entityManager.createQuery("select DISTINCT r.roleName from Role r", String.class).getResultList();
+        return entityManager.createQuery("select DISTINCT r.role_id from Role r", String.class).getResultList();
     }
     public boolean checkRole(String id){
         //select r.ROLENAME  from mydb.`role`r join mydb.grantaccess g on r.ROLE_ID = g.ROLE_ID join mydb.account a on g.ACCOUNT_ID =a.ACCOUNT_ID where  a.ACCOUNT_ID = 'teo'
