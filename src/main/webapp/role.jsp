@@ -10,10 +10,10 @@
 <body>
 <div class="container">
     <h2>Select a Role</h2>
-    <form action="ControlServlet?action=listRole" method="GET" style="text-align: center">
+    <form action="ControlServlet?action=listRoleId" method="GET" style="text-align: center">
         <label for="selectedRole"></label>
         <select id="selectedRole">
-            <% List<String> listRole = (List) request.getAttribute("listRole"); %>
+            <% List<String> listRole = (List) request.getAttribute("listRoleId"); %>
             <% for (int i = 0; i < listRole.size(); i++) { %>
             <option value="<%= listRole.get(i) %>"><%= listRole.get(i) %></option>
             <% } %>
@@ -21,6 +21,7 @@
         <br><br>
         <button type="button" onclick="showAccounts()">Show Accounts</button>
     </form>
+    <br>
     <br>
     <button type="button" onclick="window.history.back()">Back</button>
 

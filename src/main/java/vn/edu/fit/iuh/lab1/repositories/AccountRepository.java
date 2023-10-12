@@ -2,10 +2,7 @@ package vn.edu.fit.iuh.lab1.repositories;
 
 
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import vn.edu.fit.iuh.lab1.models.Account;
 import vn.edu.fit.iuh.lab1.models.Grant;
 import vn.edu.fit.iuh.lab1.models.GrantAccess;
@@ -30,15 +27,14 @@ public class AccountRepository {
         entityTransaction = entityManager.getTransaction();
     }
 
-    public boolean insert(Account acc) {
+    public boolean insert(Account account) {
         try {
             entityTransaction.begin();
-            entityManager.persist(acc);
+            entityManager.persist(account);
             entityTransaction.commit();
             return true;
 
-        } catch (Exception ex) {
-            entityTransaction.rollback();
+        }  catch (PersistenceException e) {
             return false;
         }
     }
@@ -49,8 +45,7 @@ public class AccountRepository {
             entityManager.merge(account);
             entityTransaction.commit();
             return true;
-        } catch (Exception exception) {
-            entityTransaction.rollback();
+        } catch (PersistenceException e) {
             return false;
         }
     }

@@ -1,9 +1,6 @@
 package vn.edu.fit.iuh.lab1.repositories;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import vn.edu.fit.iuh.lab1.models.Account;
 import vn.edu.fit.iuh.lab1.models.Role;
 import vn.edu.fit.iuh.lab1.models.Status;
@@ -26,7 +23,7 @@ public class RoleRepository {
     }
 
 
-    public List<String> getName() {
+    public List<String> getId() {
         return entityManager.createQuery("select DISTINCT r.role_id from Role r", String.class).getResultList();
     }
 
@@ -49,21 +46,45 @@ public class RoleRepository {
 
     }
     public List<Role> getAll (){
-        return entityManager.createNamedQuery("Account.findAll", Role.class).getResultList();
+        return entityManager.createNamedQuery("Role.findAll", Role.class).getResultList();
     }
-    public boolean add(Role role) {
+    public boolean insert(Role role) {
         try {
             entityTransaction.begin();
             entityManager.persist(role);
             entityTransaction.commit();
             return true;
-        } catch (Exception ex) {
-            if (entityTransaction.isActive()) {
-                entityTransaction.rollback();
-            }
+        }  catch (PersistenceException e) {
             return false;
         }
-
+    }
+    public boolean update(Role role) {
+        try {
+            entityTransaction.begin();
+            entityManager.merge(role);
+            entityTransaction.commit();
+            return true;
+        } catch (Exception exception) {
+            entityTransaction.rollback();
+            return false;
+        }
     }
 
+    public boolean delete(String role_id, int status) {
+        try {
+            entityTransaction.begin();
+            Role role = entityManager.find(Role.class, role_id);
+            if (role != null) role.setStatus(status);
+            entityTransaction.commit();
+            return true;
+        } catch (Exception exception) {
+            return false;
+        }
+    }
+    public Optional<Role> findbyId(String id) {
+        TypedQuery<Role> query = entityManager.createQuery("select r from Role r where r.role_id=:id", Role.class);
+        query.setParameter("id", id);
+        Role role = query.getSingleResult();
+        return role == null ? Optional.empty() : Optional.of(role);
+    }
 }

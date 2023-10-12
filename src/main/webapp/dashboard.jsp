@@ -1,5 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="vn.edu.fit.iuh.lab1.models.Account" %>
+<%@ page import="vn.edu.fit.iuh.lab1.models.Role" %>
 
 
 <!DOCTYPE html>
@@ -20,6 +21,7 @@
 
     .container {
         width: 80%;
+        height: 100%;
         margin: 20px auto;
         padding: 20px;
         background: #fff;
@@ -100,7 +102,7 @@
 
 <div class="container">
     <h2>Welcome to Admin Dashboard</h2>
-    <button type="button" onclick="location.href='ControlServlet?action=listRole'">Role</button>
+    <button type="button" onclick="location.href='ControlServlet?action=listRoleId'">Role</button>
     <button type="button" onclick="location.href='ControlServlet?action=getGrant'">Permission</button>
     <button type="button" onclick="location.href='ControlServlet?action=getLogs'">Logs</button>
     <h3>Account List</h3>
@@ -151,29 +153,47 @@
 
         </tr>
     </table>
+    <br>
+    <% List<Role> listRole = (List) request.getAttribute("listRole"); %>
+    <h2>List Role</h2>
+    <button type="button" onclick="location.href='add_role.jsp'">Add Role</button>
+    <table>
+        <tr>
+            <th>Role ID</th>
+            <th>Role Name</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+        <% for (int i = 0; i < listRole.size(); i++) { %>
+        <tr>
+            <td><%=listRole.get(i).getRole_id()%></td>
+            <td><%=listRole.get(i).getRoleName()%></td>
+            <td><%=listRole.get(i).getDescription()%></td>
+            <td>
+                <% int status = listRole.get(i).getStatus(); %>
+                <% if (status == 1) { %>
+                Enable
+                <% } else if (status == -1) { %>
+                Disable
+                <% } %>
+            </td>
+            <td><a href="update_role.jsp?role_id=<%= listRole.get(i).getRole_id() %>">Update</a></td>
+            <td>  <form method="post"
+                        action="ControlServlet?action=deleteRole&&role_id=<%= listRole.get(i).getRole_id()%>">
+                <button type="submit">Delete</button>
+            </form></td>
+
+        </tr>
+
+        <% } %>
+    </table>
     <br><br>
     <button type="button" onclick="location.href='ControlServlet?action=logout'">Logout</button>
 
 </div>
 
-<script>
 
-
-    function editAccount() {
-        // Redirect or show a modal for editing an account
-        // Example: window.location.href = 'edit_account.jsp';
-    }
-
-    function deleteAccount() {
-        // Redirect or show a modal for deleting an account
-        // Example: window.location.href = 'delete_account.jsp';
-    }
-
-    function grantPermission() {
-        // Redirect or show a modal for granting permission to an account
-        // Example: window.location.href = 'grant_permission.jsp';
-    }
-
-</script>
 </body>
 </html>

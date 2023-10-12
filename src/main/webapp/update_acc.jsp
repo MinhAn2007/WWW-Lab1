@@ -16,7 +16,6 @@
     <link rel="stylesheet" type="text/css" href="login.css">
 
     <STYLE>
-        /* login.css */
 
         body {
             background-color: #f0f0f0;

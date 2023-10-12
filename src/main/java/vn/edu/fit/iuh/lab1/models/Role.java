@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @NamedQueries(
-        value = @NamedQuery(name = "Role.findAll", query = "select r from Role r where r.status=1")
+        value = @NamedQuery(name = "Role.findAll", query = "select r from Role r")
 )
 public class Role {
     @Id
@@ -23,6 +23,13 @@ public class Role {
         this.description = description;
         this.status = status;
         this.listGrant = listGrant;
+    }
+
+    public Role(String role_id, String roleName, String description, int status) {
+        this.role_id = role_id;
+        this.roleName = roleName;
+        this.description = description;
+        this.status = status;
     }
 
     public Role() {
