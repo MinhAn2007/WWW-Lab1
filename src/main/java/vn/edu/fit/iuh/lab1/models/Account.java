@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @NamedQueries(
-        value = @NamedQuery(name = "Account.findAll", query = "select a from Account a where a.status=1")
+        value = @NamedQuery(name = "Account.findAll", query = "select a from Account a ")
 )
 public class Account {
 

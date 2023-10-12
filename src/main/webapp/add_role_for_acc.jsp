@@ -40,7 +40,7 @@
             border-radius: 5px;
         }
 
-        button[type="submit"] {
+        button {
             display: block;
             width: 100%;
             padding: 10px;
@@ -51,11 +51,11 @@
             cursor: pointer;
         }
 
-        button[type="submit"]:hover {
+        button:hover {
             background-color: #0056b3;
         }
 
-        button[type="submit"]:focus {
+        button:focus {
             outline: none;
         }
 
@@ -90,6 +90,9 @@
         <br><br>
         <button type="submit">Grant Permission</button>
     </form>
+    <br>
+    <button type="button" onclick="window.history.back()">Back</button>
+
 </div>
 </body>
 </html>

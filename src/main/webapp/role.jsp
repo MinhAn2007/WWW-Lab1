@@ -21,6 +21,9 @@
         <br><br>
         <button type="button" onclick="showAccounts()">Show Accounts</button>
     </form>
+    <br>
+    <button type="button" onclick="window.history.back()">Back</button>
+
 </div>
 <script>
     function showAccounts() {

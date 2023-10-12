@@ -103,6 +103,7 @@
             <p>Roles Not Assigned </p>
             <% } %>
         </table>
+    <button type="button" onclick="window.history.back()">Back</button>
 
 </div>
 </body>

@@ -21,6 +21,8 @@ import vn.edu.fit.iuh.lab1.repositories.GrantAccessRepository;
 import vn.edu.fit.iuh.lab1.repositories.LogRepository;
 import vn.edu.fit.iuh.lab1.repositories.RoleRepository;
 
+import static java.lang.Integer.parseInt;
+
 @WebServlet(name = "CotrollerServlet", value = "/ControlServlet")
 public class CotrollerServlet extends HttpServlet {
 
@@ -75,13 +77,12 @@ public class CotrollerServlet extends HttpServlet {
             Date logout = new Date();
             logs.setLogoutTime(logout);
             logs.setNote("Account : " + id + "\r" +
-                        "Time login : " + loginTime + "\r" +
-                        "Time logout : " + logout + "\r"
+                    "Time login : " + loginTime + "\r" +
+                    "Time logout : " + logout + "\r"
             );
             logRepository.logLogout(logs);
             response.sendRedirect("index.jsp");
         }
-
 
     }
 
@@ -151,12 +152,58 @@ public class CotrollerServlet extends HttpServlet {
                 out.println("<script type=\"text/javascript\">");
                 out.println("alert('Add Grant UnSuccess for " + acc + " role " + role + " ');");
                 out.println("window.history.back()");
-                out.println("window.location.reload()");
                 out.println("</script>");
             }
+
+        } else if (action.equalsIgnoreCase("deleteAcc")) {
+            String account_id = request.getParameter("account_id");
+            boolean delete = accountRepository.delete(account_id, -1);
+            if (delete) {
+                List<Account> listAcc = accountRepository.getAllAcc();
+                request.setAttribute("listAcc", listAcc);
+                String destination = "dashboard.jsp";
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
+                requestDispatcher.forward(request, response);
+            }
+        } else if (action.equalsIgnoreCase("updateAcc")) {
+            String accountId = request.getParameter("account_id");
+            String fullName = request.getParameter("full_name");
+            String passWord = request.getParameter("password");
+            String email = request.getParameter("email");
+            String phone = request.getParameter("phone");
+            String status = request.getParameter("status");
+            boolean update = accountRepository.update(new Account(accountId, fullName, passWord, email, phone, parseInt(status)));
+            if (update) {
+                List<Account> listAcc = accountRepository.getAllAcc();
+                request.setAttribute("listAcc", listAcc);
+            } else {
+                out.println("<script type=\"text/javascript\">");
+                out.println("alert('ERROR!@!");
+                out.println("</script>");
+            }
+            String destination = "dashboard.jsp";
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
+            requestDispatcher.forward(request, response);
+        }else if(action.equalsIgnoreCase("addAcc")) {
+            String accountId = request.getParameter("account_id");
+            String fullName = request.getParameter("full_name");
+            String passWord = request.getParameter("password");
+            String email = request.getParameter("email");
+            String phone = request.getParameter("phone");
+            String status = request.getParameter("status");
+            boolean add = accountRepository.insert(new Account(accountId, fullName, passWord, email, phone, parseInt(status)));
+            if (add) {
+                List<Account> listAcc = accountRepository.getAllAcc();
+                request.setAttribute("listAcc", listAcc);
+            } else {
+                out.println("<script type=\"text/javascript\">");
+                out.println("alert('ERROR!@!");
+                out.println("</script>");
+            }
+            String destination = "dashboard.jsp";
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
+            requestDispatcher.forward(request, response);
         }
-
-
     }
 }
 

@@ -47,7 +47,7 @@
 <body>
 <div class="container">
     <h2>InFor Account</h2>
-    <form action="ControlServlet" method="POST">
+    <form action="ControlServlet" method="get">
         <p>Name: <%= ((Account) request.getAttribute("acc")).getFullName()%></p>
         <p>Id: <%= ((Account) request.getAttribute("acc")).getAccount_id()%></p>
         <p>Email: <%= ((Account) request.getAttribute("acc")).getEmail()%></p>

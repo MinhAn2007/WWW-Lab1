@@ -1,4 +1,4 @@
-<%@ page import="java.util.List"%>
+<%@ page import="java.util.List" %>
 <%@ page import="vn.edu.fit.iuh.lab1.models.Account" %>
 
 
@@ -100,18 +100,11 @@
 
 <div class="container">
     <h2>Welcome to Admin Dashboard</h2>
-    <!-- Nút thêm tài khoản -->
     <button type="button" onclick="location.href='ControlServlet?action=listRole'">Role</button>
-    <!-- Nút sửa tài khoản -->
     <button type="button" onclick="location.href='ControlServlet?action=getGrant'">Permission</button>
-    <!-- Nút xóa tài khoản -->
     <button type="button" onclick="location.href='ControlServlet?action=getLogs'">Logs</button>
-
-    <!-- Nút cấp quyền -->
-    <button type="button" onclick="grantPermission()">Grant Permission</button>
-
-    <!-- Account List (You can loop through a list of accounts) -->
     <h3>Account List</h3>
+    <button type="button" onclick="location.href='add_account.jsp'">Add Account</button>
     <table>
         <tr>
             <th>Username</th>
@@ -120,19 +113,43 @@
             <th>Phone</th>
             <th>Status</th>
             <th>Role</th>
-
+            <th>Update</th>
+            <th>Delete</th>
         </tr>
         <% List<Account> listAcc = (List) request.getAttribute("listAcc"); %>
-        <% for(int i=0;i<listAcc.size();i++){%>
+        <% for (int i = 0; i < listAcc.size(); i++) {%>
         <tr>
-            <td> <%= listAcc.get(i).getAccount_id()%></td>
-            <td><%= listAcc.get(i).getFullName()%></td>
-            <td><%= listAcc.get(i).getEmail()%></td>
-            <td><%= listAcc.get(i).getEmail()%></td>
-            <td><%= listAcc.get(i).getStatus()%></td>
-            <td><a href="ControlServlet?action=listRoleOfAcc&account_id=<%= listAcc.get(i).getAccount_id()%>">Show Roles</a></td>
-            </tr>
-        <%}%>
+            <td><%= listAcc.get(i).getAccount_id()%>
+            </td>
+            <td><%= listAcc.get(i).getFullName()%>
+            </td>
+            <td><%= listAcc.get(i).getEmail()%>
+            </td>
+            <td><%= listAcc.get(i).getEmail()%>
+            </td>
+            <td>
+                <% int status = listAcc.get(i).getStatus(); %>
+                <% if (status == 1) { %>
+                Active
+                <% } else if (status == -1) { %>
+                Delete
+                <% } %>
+            </td>
+
+            <td><a href="ControlServlet?action=listRoleOfAcc&account_id=<%= listAcc.get(i).getAccount_id()%>">Show
+                Roles</a></td>
+            <td>
+                <a href="update_acc.jsp?account_id=<%= listAcc.get(i).getAccount_id() %>">Update</a>
+            </td>
+            <td>
+                <form method="post"
+                      action="ControlServlet?action=deleteAcc&&account_id=<%= listAcc.get(i).getAccount_id()%>">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+            <% } %>
+
+        </tr>
     </table>
     <br><br>
     <button type="button" onclick="location.href='ControlServlet?action=logout'">Logout</button>
