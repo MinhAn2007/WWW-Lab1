@@ -3,6 +3,9 @@ package vn.edu.fit.iuh.lab1.models;
 import jakarta.persistence.*;
 
 @Entity
+@NamedQueries(
+        value = @NamedQuery(name = "GrantAccess.findAll", query = "select ga from GrantAccess ga ")
+)
 public class GrantAccess {
     @Id
     private String role_id;

@@ -32,6 +32,7 @@ public class CotrollerServlet extends HttpServlet {
         RoleRepository roleRepository = new RoleRepository();
         AccountRepository accountRepository = new AccountRepository();
         LogRepository logRepository = new LogRepository();
+        GrantAccessRepository grantAccessRepository = new GrantAccessRepository();
         PrintWriter out = response.getWriter();
         List<String> listRoleForGrant = roleRepository.getId();
         List<String> listAccForGrant = accountRepository.getName();
@@ -79,6 +80,13 @@ public class CotrollerServlet extends HttpServlet {
             logs.setNote("Account : " + id + "\r" + "Time login : " + loginTime + "\r" + "Time logout : " + logout + "\r");
             logRepository.logLogout(logs);
             response.sendRedirect("index.jsp");
+        }
+        else if (action.equalsIgnoreCase("getPermisson")) {
+            List<GrantAccess> grantAccesses = grantAccessRepository.getAll();
+            request.setAttribute("listGrants", grantAccesses);
+            String destination = "permisson.jsp";
+            RequestDispatcher requestDis = request.getRequestDispatcher(destination);
+            requestDis.forward(request, response);
         }
 
     }
@@ -141,13 +149,13 @@ public class CotrollerServlet extends HttpServlet {
             String acc = request.getParameter("selectedAcc");
             String description = request.getParameter("description");
             boolean add = grantAccessRepository.insert(new GrantAccess(role, acc, Grant.ENABLED, description));
+            List<GrantAccess> grantAccesses = grantAccessRepository.getAll();
+            request.setAttribute("listGrants", grantAccesses);
             if (add) {
-                out.println("<script type=\"text/javascript\">");
-                out.println("alert('Add Grant success for " + acc + " role " + role + " ');");
-                out.println("window.history.back()");
-                out.println("window.location.reload()");
-                out.println("</script>");
-            } else {
+                request.setAttribute("successMessage", "Add Grant Success for " + acc + " role " + role);
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher("permisson.jsp");
+                requestDispatcher.forward(request, response);
+            }else {
                 out.println("<script type=\"text/javascript\">");
                 out.println("alert('Add Grant UnSuccess for " + acc + " role " + role + " ');");
                 out.println("window.history.back()");
@@ -276,6 +284,40 @@ public class CotrollerServlet extends HttpServlet {
                 out.println("</script>");
             }
         }
-    }
+        else if (action.equalsIgnoreCase("deleteGrant")) {
+            String account_id = request.getParameter("account_id");
+            String role_id = request.getParameter("role_id");
+            boolean delete = grantAccessRepository.delete(role_id,account_id,Grant.DISABLED);
+            List<GrantAccess> grantAccesses = grantAccessRepository.getAll();
+            request.setAttribute("listGrants", grantAccesses);
+            if (delete) {
+                String destination = "permisson.jsp";
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
+                requestDispatcher.forward(request, response);
+            } else {
+                out.println("<script type=\"text/javascript\">");
+                out.println("alert('Error while deleting Account!')");
+                out.println("window.history.back();");
+                out.println("</script>");
+            }
+        } else if (action.equalsIgnoreCase("updateGrant")) {
+            String accountId = request.getParameter("account_id");
+            String role_id = request.getParameter("role_id");
+            String note = request.getParameter("note");
+            String status = request.getParameter("status");
+            boolean update = grantAccessRepository.update(new GrantAccess(role_id, accountId,Grant.fromGrant(parseInt(status)),note));
+            List<GrantAccess> grantAccesses = grantAccessRepository.getAll();
+            request.setAttribute("listGrants", grantAccesses);
+            if (update) {
+                String destination = "permisson.jsp";
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
+                requestDispatcher.forward(request, response);
+            } else {
+                out.println("<script type=\"text/javascript\">");
+                out.println("alert('ERROR!@!");
+                out.println("</script>");
+            }
+
+        }}
 }
 

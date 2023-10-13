@@ -103,7 +103,7 @@
 <div class="container">
     <h2>Welcome to Admin Dashboard</h2>
     <button type="button" onclick="location.href='ControlServlet?action=listRoleId'">Role</button>
-    <button type="button" onclick="location.href='ControlServlet?action=getGrant'">Permission</button>
+    <button type="button" onclick="location.href='ControlServlet?action=getPermisson'">Permission</button>
     <button type="button" onclick="location.href='ControlServlet?action=getLogs'">Logs</button>
     <h3>Account List</h3>
     <button type="button" onclick="location.href='add_account.jsp'">Add Account</button>

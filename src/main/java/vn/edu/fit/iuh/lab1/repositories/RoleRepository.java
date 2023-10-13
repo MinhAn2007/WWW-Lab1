@@ -29,7 +29,7 @@ public class RoleRepository {
 
     public boolean checkRole(String id) {
         //select r.ROLENAME  from mydb.`role`r join mydb.grantaccess g on r.ROLE_ID = g.ROLE_ID join mydb.account a on g.ACCOUNT_ID =a.ACCOUNT_ID where  a.ACCOUNT_ID = 'teo'
-        TypedQuery<String> query = entityManager.createQuery("select r.role_id  from Role r join GrantAccess g on r.role_id = g.role_id join Account  a on g.account_id =a.account_id where  a.account_id =:id", String.class);
+        TypedQuery<String> query = entityManager.createQuery("select r.role_id  from Role r join GrantAccess g on r.role_id = g.role_id join Account  a on g.account_id =a.account_id where  a.account_id =:id and a.status = 1", String.class);
         query.setParameter("id", id);
         List<String> string = query.getResultList();
         for (String s : string) {
