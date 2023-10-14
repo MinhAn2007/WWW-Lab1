@@ -85,6 +85,8 @@
             <th>Log In</th>
             <th>Log Out</th>
             <th>Note</th>
+            <th>EDIT</th>
+            <th>DELETE</th>
         </tr>
         <% for (int i = 0; i < listLogs.size(); i++) { %>
         <tr>
@@ -92,6 +94,15 @@
             <td><%= listLogs.get(i).getLoginTime() %></td>
             <td><%= listLogs.get(i).getLogoutTime() %></td>
             <td><%= listLogs.get(i).getNote() %></td>
+            <td>
+                <a href="update_log.jsp?log_id=<%= listLogs.get(i).getId() %>">Update</a>
+            </td>
+            <td>
+                <form method="post"
+                      action="ControlServlet?action=deleteLog&&log_id=<%= listLogs.get(i).getId()%>">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
         </tr>
         <% } %>
     </table>

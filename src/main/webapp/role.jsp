@@ -20,10 +20,10 @@
         </select>
         <br><br>
         <button type="button" onclick="showAccounts()">Show Accounts</button>
+        <br>
+        <br>
+        <button type="button" onclick="window.history.back()">Back</button>
     </form>
-    <br>
-    <br>
-    <button type="button" onclick="window.history.back()">Back</button>
 
 </div>
 <script>

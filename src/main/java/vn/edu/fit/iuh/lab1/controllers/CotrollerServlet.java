@@ -78,8 +78,15 @@ public class CotrollerServlet extends HttpServlet {
             Date logout = new Date();
             logs.setLogoutTime(logout);
             logs.setNote("Account : " + id + "\r" + "Time login : " + loginTime + "\r" + "Time logout : " + logout + "\r");
-            logRepository.logLogout(logs);
-            response.sendRedirect("index.jsp");
+            if(logRepository.logLogout(logs))
+                response.sendRedirect("index.jsp");
+            else {
+                out = response.getWriter();
+                out.println("<script type=\"text/javascript\">");
+                out.println("alert('Something error here !!!!!!')");
+                out.println("window.history.back()");
+                out.println("</script>");
+            }
         }
         else if (action.equalsIgnoreCase("getPermisson")) {
             List<GrantAccess> grantAccesses = grantAccessRepository.getAll();
@@ -318,6 +325,40 @@ public class CotrollerServlet extends HttpServlet {
                 out.println("</script>");
             }
 
-        }}
+        }else if (action.equalsIgnoreCase("deleteLog")) {
+            Long log_id = Long.parseLong(request.getParameter("log_id"));
+            boolean delete = logRepository.delete(log_id,"Remove");
+            List<Logs> logsList = logRepository.getAllLogs();
+            request.setAttribute("Listlogs", logsList);
+            if (delete) {
+                String destination = "log.jsp";
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
+                requestDispatcher.forward(request, response);
+            } else {
+                out.println("<script type=\"text/javascript\">");
+                out.println("alert('Error while deleting Log!')");
+                out.println("window.history.back();");
+                out.println("</script>");
+            }
+        } else if (action.equalsIgnoreCase("updateLog")) {
+            Long log_id = Long.parseLong(request.getParameter("log_id"));
+            String note = request.getParameter("note");
+            boolean update = logRepository.delete(log_id,note);
+            List<Logs> logsList = logRepository.getAllLogs();
+            request.setAttribute("Listlogs", logsList);
+            if (update) {
+                String destination = "log.jsp";
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher(destination);
+                requestDispatcher.forward(request, response);
+            } else {
+                out.println("<script type=\"text/javascript\">");
+                out.println("alert('Error while deleting Log!')");
+                out.println("window.history.back();");
+                out.println("</script>");
+            }
+
+        }
+    }
+
 }
 
