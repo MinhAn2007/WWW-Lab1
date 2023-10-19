@@ -54,11 +54,11 @@ Web Quản lý Tài khoản là một ứng dụng servlet Java, cho phép bạn
 
 8. Phân quyền bằng cách nhấn vào Nút Permisson Trong màn hình Dashboard ![img_12.png](img/img_12.png) 
 
-9. Sau khi nhấn vào nút Permisson web sẽ đưa tới trang permission hiển thị các quyền đang được phân cho User ![img_2.png](img_2.png)
+9. Sau khi nhấn vào nút Permisson web sẽ đưa tới trang permission hiển thị các quyền đang được phân cho User ![img.png](img.png)
 
-10. Chọn nút Add Grant để phần quyền cho user ![img_1.png](img_1.png)
+10. Chọn nút Add Grant để phần quyền cho user ![img_2.png](img_2.png)
 
-11. Hiển thị màn hình phân quyền. Ở đây bạn có thể phân quyền cho các user vào các role có trong CSDL ![img_3.png](img_3.png)
+11. Hiển thị màn hình phân quyền. Ở đây bạn có thể phân quyền cho các user vào các role có trong CSDL
     
     Nếu phân quyền thành công bạn sẽ được đưa về trang Permission với dòng thông báo ADD Grant Success .... ![img_4.png](img_4.png)
 
@@ -68,28 +68,28 @@ Web Quản lý Tài khoản là một ứng dụng servlet Java, cho phép bạn
 
 13. Có thể thực hiện update Account , Role , Logs , Grant bằng cách nhấn vào phần update trong các Table tương ứng (các thông tin trong phần update sẽ được hiển thị tương ứng với thông tin của đối tượng cần update)
 
-    Màn hình update Accout(Phần ID sẽ không được chỉnh sửa) ![img_9.png](img_9.png)
-    Phần update sẽ được cập nhật ở Dashboard ![img_11.png](img_11.png)
+    Màn hình update Accout(Phần ID sẽ không được chỉnh sửa) ![img_8.png](img_8.png)
+    Phần update sẽ được cập nhật ở Dashboard ![img_9.png](img_9.png)
 
     Màn hình update Role(Phần ID sẽ không được chỉnh sửa) ![img_12.png](img_12.png)
     
-    Màn hình update Grant (Phần Role_id và Account_id không được chỉnh sửa) ![img_13.png](img_13.png)
+    Màn hình update Grant (Phần Role_id và Account_id không được chỉnh sửa) ![img_10.png](img_10.png)
     
-    Màn hình update Logs (Phần Account_id,Time login,Time logout sẽ không được chỉnh sửa) ![img_14.png](img_14.png)
+    Màn hình update Logs (Phần Account_id,Time login,Time logout sẽ không được chỉnh sửa) ![img_11.png](img_11.png)
 
 14. Có thể thực hiện delete Account, Role, Logs, Grant bằng cách nhấn vào button Delete Trong các Table tương ứng
 
-    Delete Account (sẽ set Status thành Disable) ![img_15.png](img_15.png)
+    Delete Account (sẽ set Status thành Delete) ![img_12.png](img_12.png)
 
-    Delete Role (sẽ set Status thành Disable) ![img_16.png](img_16.png)
+    Delete Role (sẽ set Status thành Disable) ![img_14.png](img_14.png)
 
-    Delete Grant (sẽ set Status thành Disable) ![img_17.png](img_17.png)
+    Delete Grant (sẽ set Status thành Disable) ![img_15.png](img_15.png)
 
-    Delete Logs (sẽ set Note thành Remove) ![img_18.png](img_18.png)
+    Delete Logs (sẽ set Note thành Remove) ![img_16.png](img_16.png)
 
 15. Thực hiện Add các đối tượng qua việc nhấn nút Add ở từng bảng (trừ Logs sẽ được tự thêm vào mỗi lần logout)
 
-    Add Account ![img_19.png](img_19.png) sau đó màn hình sẽ được chuyển về dashboard và thêm Account mới vào bảng ![img_20.png](img_20.png)
+    Add Account ![img_19.png](img_19.png) sau đó màn hình sẽ được chuyển về dashboard và thêm Account mới vào bảng ![img_18.png](img_18.png)
 
     Add Role ![img_21.png](img_21.png) sau đó màn hình sẽ được chuyển về dashboard và thêm Role mới vào bảng ![img_22.png](img_22.png)
     

@@ -54,7 +54,7 @@
         <label >Role ID:</label>
         <input type="text" name="log_id" value="<%= logs.getId() %>" readonly>
         <br>
-        <label >Role Name:</label>
+        <label> Acoount Name:</label>
         <input type="text" name="account_id" value="<%= logs.getAccount_id() %>" readonly>
         <br>
         <label >Log In Time:</label>
