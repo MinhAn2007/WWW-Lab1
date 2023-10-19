@@ -1,4 +1,5 @@
-<%@ page import="vn.edu.fit.iuh.lab1.models.Account" %><%--
+<%@ page import="vn.edu.fit.iuh.lab1.models.Account" %>
+<%@ page import="vn.edu.fit.iuh.lab1.repositories.RoleRepository" %><%--
   Created by IntelliJ IDEA.
   User: PC
   Date: 9/28/2023
@@ -52,8 +53,15 @@
         <p>Id: <%= ((Account) request.getAttribute("acc")).getAccount_id()%></p>
         <p>Email: <%= ((Account) request.getAttribute("acc")).getEmail()%></p>
         <p>Phone: <%= ((Account) request.getAttribute("acc")).getPhone()%></p>
-        <p>Status: <%= ((Account) request.getAttribute("acc")).getStatus()%></p>
-
+        <% int status = ((Account) request.getAttribute("acc")).getStatus(); %>
+       <p> <% if (status == 1) { %>
+        Status: Active
+        <% } else if (status == -1) { %>
+        Status: Delete
+        <% }%>
+        </p>
+        <% RoleRepository roleRepository = new RoleRepository();%>
+        <p>Role : <%= roleRepository.getName(((Account) request.getAttribute("acc")).getAccount_id()) %></p>
     </form>
     <button type="button" onclick="location.href='ControlServlet?action=logout'">Logout</button>
 

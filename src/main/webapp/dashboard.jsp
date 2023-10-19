@@ -102,7 +102,6 @@
 
 <div class="container">
     <h2>Welcome to Admin Dashboard</h2>
-    <button type="button" onclick="location.href='ControlServlet?action=listRoleId'">Role</button>
     <button type="button" onclick="location.href='ControlServlet?action=getPermisson'">Permission</button>
     <button type="button" onclick="location.href='ControlServlet?action=getLogs'">Logs</button>
     <h3>Account List</h3>
@@ -163,6 +162,7 @@
             <th>Role Name</th>
             <th>Description</th>
             <th>Status</th>
+            <th>Account</th>
             <th>Update</th>
             <th>Delete</th>
         </tr>
@@ -179,6 +179,8 @@
                 Disable
                 <% } %>
             </td>
+            <td><a href="ControlServlet?action=listAccByRole&role_id=<%= listRole.get(i).getRole_id()%>">Show
+                Account</a></td>
             <td><a href="update_role.jsp?role_id=<%= listRole.get(i).getRole_id() %>">Update</a></td>
             <td>  <form method="post"
                         action="ControlServlet?action=deleteRole&&role_id=<%= listRole.get(i).getRole_id()%>">

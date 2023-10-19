@@ -16,39 +16,31 @@
 
 -- Dumping data for table mydb.account: ~5 rows (approximately)
 INSERT INTO `account` (`ACCOUNT_ID`, `EMAIL`, `FULLNAME`, `PASSWORD`, `PHONE`, `STATUS`) VALUES
-	('an', 'an@gmail.com', 'NGuyen Van An', '123', '12312313131', 1),
+	('an', 'minhan200702@gmail.com', 'NGuyen Van Minh An', '123', '0123172312', 1),
 	('phuc', 'phuc@gmail.com', 'NGuyen Ngoc phuc', '123', '123412431234', 1),
 	('teo', 'teo@gmail.com', 'nguyen Van Teo', '123', '12312313131', 1),
 	('tung', 'tung@gmail.com', 'NGuyen Ngoc Tung', '123', '123412431234', 1),
 	('vy', 'vy@gmail.com', 'NGuyen Van ti', '123', '41234123412', 1);
 
--- Dumping data for table mydb.grantaccess: ~15 rows (approximately)
+-- Dumping data for table mydb.grantaccess: ~6 rows (approximately)
 INSERT INTO `grantaccess` (`ACCOUNT_ID`, `ROLE_ID`, `is_grant`, `NOTE`) VALUES
 	('an', 'admin', 1, ''),
-	('an', 'lead', 1, 'Vo Ngoc Minh An'),
-	('an', 'pm', 1, ''),
-	('an', 'review', 1, '1231231'),
-	('an', 'user', 1, ''),
-	('phuc', 'lead', 1, ''),
-	('phuc', 'pm', 1, ''),
-	('phuc', 'review', 1, ''),
-	('teo', 'user', 1, ''),
-	('tung', 'admin', 1, '1231231'),
-	('tung', 'lead', 1, 'Team Lead'),
-	('tung', 'user', 1, ''),
-	('vy', 'admin', 1, '1231231'),
-	('vy', 'review', 1, ''),
-	('vy', 'user', 1, '');
+	('phuc', 'tester', 1, 'add tester'),
+	('teo', 'review', 1, 'Reviewer'),
+	('tung', 'pm', 1, 'project manager'),
+	('vy', 'admin', 1, 'adminastor'),
+	('vy', 'user', 1, 'user');
 
--- Dumping data for table mydb.logs: ~0 rows (approximately)
+-- Dumping data for table mydb.logs: ~2 rows (approximately)
 
--- Dumping data for table mydb.role: ~5 rows (approximately)
+-- Dumping data for table mydb.role: ~6 rows (approximately)
 INSERT INTO `role` (`ROLE_ID`, `DESCRIPTION`, `ROLENAME`, `STATUS`) VALUES
 	('admin', 'adminastor', 'adminastor', 1),
 	('lead', 'leader of team role', 'leader', 1),
 	('pm', 'Project Manager', 'Project Manager', 1),
 	('review', 'reviewer role', 'reviewer', 1),
-	('user', 'user', 'user', 1);
+	('tester', 'tester', 'tester', 1),
+	('user', 'user', 'user', -1);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
