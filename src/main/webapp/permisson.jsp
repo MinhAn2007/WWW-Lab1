@@ -94,7 +94,7 @@
     <% } %>
 
     <% List<GrantAccess> listGrants = (List) request.getAttribute("listGrants"); %>
-    <button type="button" onclick="location.href='ControlServlet?action=getGrant'">Permission</button>
+    <button type="button" onclick="location.href='ControlServlet?action=getGrant'">Add Grant</button>
     <table>
         <tr>
             <th>Role ID</th>

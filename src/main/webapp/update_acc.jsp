@@ -46,8 +46,12 @@
     <%   Account acc = optionalAccount.orElseThrow(() -> new IllegalStateException("Account not found")); %>
 
     <% System.out.println(acc); %>
+    <label>ID:</label>
+    <br>
     <input type="text" name="account_id" value="<%= acc.getAccount_id() %>" readonly >
+    <br>
     <label>Full Name:</label>
+    <br>
     <input type="text" name="full_name" value="<%= acc.getFullName()  %>">
     <br>
     <label>Password:</label>

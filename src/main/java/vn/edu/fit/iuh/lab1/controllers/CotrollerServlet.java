@@ -164,7 +164,7 @@ public class CotrollerServlet extends HttpServlet {
                 requestDispatcher.forward(request, response);
             }else {
                 out.println("<script type=\"text/javascript\">");
-                out.println("alert('Add Grant UnSuccess for " + acc + " role " + role + " ');");
+                out.println("alert('User has been granted this permission.')");
                 out.println("window.history.back()");
                 out.println("</script>");
             }
